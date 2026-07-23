@@ -154,7 +154,7 @@ function getSkillIcon(tag: string) {
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
         </svg>
       );
-    case 'gemini llm':
+    case 'llm integration':
       return (
         <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2l2.4 7.2L22 11.6l-7.6 2.4-2.4 7.2-2.4-7.2L2 11.6l7.6-2.4z" fill="#4285F4" />
@@ -334,7 +334,7 @@ export default function Profile() {
               { label: 'FRONTEND', tags: ['React', 'Three.js', 'Tailwind CSS', 'GSAP'] },
               { label: 'BACKEND', tags: ['Laravel', 'Node.js', 'Express.js', 'CodeIgniter', 'REST API'] },
               { label: 'DATABASES', tags: ['MySQL', 'PostgreSQL', 'Oracle DB'] },
-              { label: 'TOOLS', tags: ['Git', 'GitHub Actions', 'CI/CD', 'Gemini LLM', 'Agile'] },
+              { label: 'TOOLS', tags: ['Git', 'GitHub Actions', 'CI/CD', 'LLM Integration', 'Agile'] },
             ].map(({ label, tags }) => (
               <div key={label} className="group/cat p-4 rounded-xl border border-black/5 bg-white/30 hover:bg-white/80 hover:border-black/10 hover:shadow-xs transition-all duration-300 flex flex-col justify-start gap-3">
                 <span className="font-jura text-[10px] font-bold tracking-[0.2em] text-stone-400 group-hover/cat:text-black transition-colors uppercase block">
