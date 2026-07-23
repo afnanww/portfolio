@@ -386,8 +386,8 @@ export default function Certificates() {
                 >
                   {/* Cert Tile — sharp rectangular tile without corner smoothing */}
                   <div
-                    className={`relative w-[84px] h-[58px] md:w-[96px] md:h-[66px] rounded-none overflow-hidden border-0 ring-0 outline-none shadow-md transition-all duration-300 ${isHovered
-                        ? 'scale-140 shadow-2xl z-30'
+                    className={`relative w-[84px] h-[58px] md:w-[120px] md:h-[82px] lg:w-[150px] lg:h-[104px] rounded-none overflow-hidden border-0 ring-0 outline-none shadow-md transition-all duration-300 ${isHovered
+                        ? 'scale-125 shadow-2xl z-30'
                         : 'hover:scale-110 opacity-95 hover:opacity-100'
                       }`}
                   >
@@ -436,7 +436,7 @@ export default function Certificates() {
             <div className="flex items-center justify-between border-b border-black/10 pb-4">
               <div className="flex items-center gap-3">
                 <span className="font-jura text-xs font-bold uppercase tracking-widest px-3 py-1 rounded bg-black/5 text-black/70">
-                  {selectedCert.issuer} Verified
+                  {selectedCert.issuer}
                 </span>
               </div>
 
@@ -452,7 +452,7 @@ export default function Certificates() {
             <div className="py-6 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
               {/* Left Column: Title & Description Information */}
               <div className="md:col-span-6 space-y-5">
-                <span className="font-jura text-xs uppercase tracking-[0.3em] text-black/50 block">
+                <span className="font-jura text-sm font-bold uppercase tracking-[0.25em] text-black/80 block">
                   Issuer: {selectedCert.issuer}
                 </span>
 
@@ -466,8 +466,8 @@ export default function Certificates() {
 
                 {/* Verified Skills Tags */}
                 <div>
-                  <span className="font-jura text-xs uppercase tracking-widest text-black/40 block mb-2.5 font-semibold">
-                    Competencies & Skills Verified
+                  <span className="font-jura text-sm font-bold uppercase tracking-[0.2em] text-black/80 block mb-3">
+                    Competencies & Skills
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {selectedCert.skills.map((skill, idx) => (

@@ -311,11 +311,9 @@ export default function Profile() {
               {/* Bottom Architectural Info Label */}
               <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded border border-black/15 text-right pointer-events-auto shadow-md">
                 <span className="font-display text-base tracking-wide text-black block leading-tight">
-                  AFNAN WAJDI
+                  MUHAMMAD AFNAN WAJDI
                 </span>
-                <span className="font-jura text-[9px] tracking-[0.2em] text-stone-600 uppercase block font-bold">
-                  Frontend & WebGL
-                </span>
+
               </div>
             </div>
           </div>
