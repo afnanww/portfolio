@@ -359,7 +359,7 @@ export default function Certificates() {
                 alt={hub.name}
                 loading="lazy"
                 decoding="async"
-                className="h-16 md:h-20 lg:h-24 w-auto mx-auto object-contain"
+                className="h-20 md:h-28 lg:h-36 w-auto mx-auto object-contain"
               />
             </div>
 
