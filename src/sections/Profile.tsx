@@ -303,6 +303,8 @@ export default function Profile() {
               <img
                 src="/images/portrait_cutout.png"
                 alt="Afnan Wajdi"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.18)] contrast-105 brightness-100 block"
               />
 

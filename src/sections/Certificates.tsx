@@ -386,6 +386,8 @@ export default function Certificates() {
                     <img
                       src={cert.image}
                       alt={cert.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-fill block border-0 ring-0 outline-none rounded-none scale-105"
                       draggable={false}
                     />
@@ -493,6 +495,8 @@ export default function Certificates() {
                   <img
                     src={selectedCert.image}
                     alt={selectedCert.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain block border-0 ring-0 outline-none"
                   />
                 </div>

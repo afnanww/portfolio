@@ -343,16 +343,20 @@ function ConnectionLines() {
     return geo;
   }, []);
 
+  const frameCount = useRef(0);
   useFrame((state) => {
     if (!linesRef.current) return;
+    frameCount.current += 1;
+    if (frameCount.current % 2 !== 0) return; // Run buffer math every 2nd frame for 2x CPU efficiency
+
     const time = state.clock.elapsedTime;
     const posArray = linesRef.current.geometry.attributes.position.array as Float32Array;
 
     for (let i = 0; i < posArray.length; i += 6) {
       const idx = i / 6;
       const speed = 0.2 + (idx % 5) * 0.1;
-      posArray[i + 1] += Math.sin(time * speed + idx) * 0.1;
-      posArray[i + 4] += Math.cos(time * speed + idx) * 0.1;
+      posArray[i + 1] += Math.sin(time * speed + idx) * 0.2;
+      posArray[i + 4] += Math.cos(time * speed + idx) * 0.2;
     }
 
     linesRef.current.geometry.attributes.position.needsUpdate = true;

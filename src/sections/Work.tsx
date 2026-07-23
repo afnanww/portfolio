@@ -254,6 +254,8 @@ export default function Work() {
                   <img
                     src={currentProject.image}
                     alt={currentProject.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500" />
