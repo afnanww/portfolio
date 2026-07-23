@@ -334,6 +334,7 @@ export default function Contact() {
               href="https://linkedin.com/in/afnanw"
               target="_blank"
               rel="noopener noreferrer"
+              data-circle-cursor="lets connect!"
               className="flex flex-col items-center gap-2 text-black hover:opacity-75 transition-all group"
             >
               <div className="w-11 h-11 rounded-full border-2 border-black flex items-center justify-center group-hover:scale-110 transition-transform bg-transparent">
@@ -351,6 +352,7 @@ export default function Contact() {
               href="https://github.com/afnanww"
               target="_blank"
               rel="noopener noreferrer"
+              data-circle-cursor="lets connect!"
               className="flex flex-col items-center gap-2 text-black hover:opacity-75 transition-all group"
             >
               <div className="w-11 h-11 rounded-full border-2 border-black flex items-center justify-center group-hover:scale-110 transition-transform bg-transparent">
@@ -368,6 +370,7 @@ export default function Contact() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
+              data-circle-cursor="lets connect!"
               className="flex flex-col items-center gap-2 text-black hover:opacity-75 transition-all group"
             >
               <div className="w-11 h-11 rounded-full border-2 border-black flex items-center justify-center group-hover:scale-110 transition-transform bg-transparent">

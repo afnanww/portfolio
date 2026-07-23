@@ -245,7 +245,7 @@ export default function Work() {
                 ref={imageCardRef}
                 onClick={() => setSelectedProject(currentProject)}
                 className="relative w-full max-w-5xl aspect-[16/10] md:aspect-[16/9] cursor-pointer group shadow-2xl transition-transform duration-300 hover:scale-[1.01]"
-                data-circle-cursor="VIEW"
+                data-circle-cursor="view project"
               >
                 {/* Image Container */}
                 <div

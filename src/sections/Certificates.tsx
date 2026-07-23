@@ -378,7 +378,7 @@ export default function Certificates() {
                   onClick={() => setSelectedCert(cert)}
                   onMouseEnter={() => setHoveredCert(cert.id)}
                   onMouseLeave={() => setHoveredCert(null)}
-                  data-circle-cursor="VIEW"
+                  data-circle-cursor="view"
                   aria-label={cert.title}
                 >
                   {/* Cert Tile — sharp rectangular tile without corner smoothing */}

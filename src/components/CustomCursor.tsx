@@ -41,12 +41,32 @@ export default function CustomCursor() {
     const glowX = gsap.quickTo(glow, 'x', { duration: 0.3, ease: 'power1.out' });
     const glowY = gsap.quickTo(glow, 'y', { duration: 0.3, ease: 'power1.out' });
 
+    let inHero = true;
+
+    const onScroll = () => {
+      const currentInHero = window.scrollY < window.innerHeight * 0.75;
+      if (currentInHero !== inHero) {
+        inHero = currentInHero;
+        if (!stateRef.current.hovering && stateRef.current.visible) {
+          gsap.to(text, {
+            opacity: inHero ? 0.85 : 0,
+            scale: inHero ? 1 : 0.7,
+            duration: 0.3,
+            ease: 'power2.out',
+          });
+        }
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
     // Show cursor on first move
     const onMouseMove = (e: MouseEvent) => {
       if (!stateRef.current.visible) {
         stateRef.current.visible = true;
-        // Only make the rotating text circle visible initially
-        gsap.to(text, { opacity: 0.85, duration: 0.3 });
+        // Only make the rotating text circle visible initially if in Hero
+        if (inHero) {
+          gsap.to(text, { opacity: 0.85, duration: 0.3 });
+        }
       }
       dotX(e.clientX);
       dotY(e.clientY);
@@ -68,17 +88,17 @@ export default function CustomCursor() {
       const customText = target.getAttribute('data-circle-cursor');
       let label = '';
       if (customText) {
-        label = customText === 'more_detail' ? 'MORE DETAIL' : customText.toUpperCase();
+        label = customText === 'more_detail' ? 'More Detail' : customText;
       } else if (target.closest('.project-card') || target.closest('.junni-works-item')) {
-        label = 'VIEW';
+        label = 'view project';
       }
       stateRef.current.label = label;
 
       // Animate ring expand to fit bigger text & make it visible
       gsap.to(ring, {
         opacity: 1,
-        width: label ? 96 : 64,
-        height: label ? 96 : 64,
+        width: label ? 108 : 64,
+        height: label ? 108 : 64,
         borderWidth: 2,
         borderColor: '#D4FF90',
         backgroundColor: 'rgba(0,0,0,0.7)',
@@ -142,9 +162,14 @@ export default function CustomCursor() {
         ease: 'power2.out',
       });
 
-      // Show text ring & glow
-      gsap.to(text, { opacity: 0.85, scale: 1, duration: 0.4, ease: 'power2.out' });
-      gsap.to(glow, { opacity: 0.4, scale: 1, duration: 0.4 });
+      // Show text ring & glow only if still in Hero section
+      if (inHero) {
+        gsap.to(text, { opacity: 0.85, scale: 1, duration: 0.4, ease: 'power2.out' });
+        gsap.to(glow, { opacity: 0.4, scale: 1, duration: 0.4 });
+      } else {
+        gsap.to(text, { opacity: 0, scale: 0.7, duration: 0.4, ease: 'power2.out' });
+        gsap.to(glow, { opacity: 0, scale: 0.5, duration: 0.4 });
+      }
 
       const labelEl = ring.querySelector('.cursor-label') as HTMLElement;
       if (labelEl) {
@@ -181,8 +206,10 @@ export default function CustomCursor() {
         gsap.to([text, glow], { opacity: 0, duration: 0.2 });
       } else {
         gsap.to([dot, ring], { opacity: 0, duration: 0.2 });
-        gsap.to(text, { opacity: 0.85, duration: 0.2 });
-        gsap.to(glow, { opacity: 0.4, duration: 0.2 });
+        if (inHero) {
+          gsap.to(text, { opacity: 0.85, duration: 0.2 });
+          gsap.to(glow, { opacity: 0.4, duration: 0.2 });
+        }
       }
       stateRef.current.visible = true;
     };
@@ -212,6 +239,7 @@ export default function CustomCursor() {
 
     return () => {
       document.body.classList.remove('custom-cursor-active');
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
@@ -238,7 +266,7 @@ export default function CustomCursor() {
       {/* Layer 3: Rotating SCROLL DOWN text ring (Inverts automatically with mix-blend-mode) */}
       <div
         ref={cursorTextRef}
-        className="fixed top-0 left-0 pointer-events-none z-[999997] w-28 h-28 opacity-0"
+        className="fixed top-0 left-0 pointer-events-none z-[999997] w-36 h-36 opacity-0"
         style={{ mixBlendMode: 'difference' }}
       >
         <svg
@@ -248,10 +276,10 @@ export default function CustomCursor() {
           <defs>
             <path
               id="cursorCirclePath"
-              d="M 50, 50 m -33, 0 a 33,33 0 1,1 66,0 a 33,33 0 1,1 -66,0"
+              d="M 50, 50 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"
             />
           </defs>
-          <text className="font-jura text-[10px] font-extrabold tracking-[0.24em] fill-current uppercase">
+          <text className="font-jura text-[12px] font-extrabold tracking-[0.28em] fill-current uppercase">
             <textPath href="#cursorCirclePath">
               SCROLL DOWN • SCROLL DOWN •
             </textPath>
@@ -272,7 +300,7 @@ export default function CustomCursor() {
       >
         {/* Dynamic label */}
         <span
-          className="cursor-label absolute inset-0 flex items-center justify-center font-jura text-[12px] font-bold tracking-[0.25em] text-[#D4FF90] uppercase text-center leading-tight opacity-0"
+          className="cursor-label absolute inset-0 flex items-center justify-center font-jura text-[11px] font-bold tracking-[0.2em] text-[#D4FF90] text-center leading-tight opacity-0"
         />
       </div>
 
