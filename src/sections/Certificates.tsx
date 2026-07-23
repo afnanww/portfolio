@@ -359,7 +359,7 @@ export default function Certificates() {
                 alt={hub.name}
                 loading="lazy"
                 decoding="async"
-                className="h-10 md:h-14 lg:h-16 w-auto mx-auto object-contain"
+                className="h-16 md:h-20 lg:h-24 w-auto mx-auto object-contain"
               />
             </div>
 
@@ -384,8 +384,8 @@ export default function Certificates() {
                   {/* Cert Tile — sharp rectangular tile without corner smoothing */}
                   <div
                     className={`relative w-[84px] h-[58px] md:w-[120px] md:h-[82px] lg:w-[150px] lg:h-[104px] rounded-none overflow-hidden border-0 ring-0 outline-none shadow-md transition-all duration-300 ${isHovered
-                        ? 'scale-125 shadow-2xl z-30'
-                        : 'hover:scale-110 opacity-95 hover:opacity-100'
+                      ? 'scale-125 shadow-2xl z-30'
+                      : 'hover:scale-110 opacity-95 hover:opacity-100'
                       }`}
                   >
                     <img
