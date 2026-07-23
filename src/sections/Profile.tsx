@@ -296,7 +296,7 @@ export default function Profile() {
           {/* Right Column: Person Cutout aligned perfectly to the border bottom line (z-30) */}
           <div
             ref={portraitRef}
-            className="lg:col-span-5 relative z-30 lg:-mt-24 flex justify-center lg:justify-end items-end"
+            className="lg:col-span-5 relative z-30 lg:-mt-24 flex justify-center lg:justify-start lg:pl-8 items-end"
           >
             <div className="relative w-full max-w-[280px] lg:max-w-[320px] flex flex-col justify-end">
               {/* Person Cutout Image - sits flat on the border line */}
