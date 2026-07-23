@@ -331,7 +331,7 @@ export default function Contact() {
           <div className="flex items-center justify-center gap-10 mt-8 pointer-events-auto">
             {/* LinkedIn */}
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/afnanw"
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-col items-center gap-2 text-black hover:opacity-75 transition-all group"
@@ -348,7 +348,7 @@ export default function Contact() {
 
             {/* GitHub */}
             <a
-              href="https://github.com"
+              href="https://github.com/afnanww"
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-col items-center gap-2 text-black hover:opacity-75 transition-all group"
@@ -360,6 +360,26 @@ export default function Contact() {
               </div>
               <span className="font-jura text-[11px] font-black tracking-widest uppercase text-black">
                 GitHub
+              </span>
+            </a>
+
+            {/* Resume */}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 text-black hover:opacity-75 transition-all group"
+            >
+              <div className="w-11 h-11 rounded-full border-2 border-black flex items-center justify-center group-hover:scale-110 transition-transform bg-transparent">
+                <svg className="w-5 h-5 fill-none stroke-black" viewBox="0 0 24 24" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+              </div>
+              <span className="font-jura text-[11px] font-black tracking-widest uppercase text-black">
+                Resume
               </span>
             </a>
           </div>
