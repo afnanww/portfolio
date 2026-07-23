@@ -85,11 +85,11 @@ export default function Work() {
 
   // Next / Prev slide handlers
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % projects.length);
+    setActiveIndex((prev) => Math.min(prev + 1, projects.length - 1));
   };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
   };
 
   // Keyboard arrow & scroll navigation
@@ -188,45 +188,46 @@ export default function Work() {
               </h2>
             </div>
 
-            {/* Project Image Card with Organic Wavy Frame */}
-            <div
-              ref={imageCardRef}
-              onClick={() => !currentProject.isComingSoon && setSelectedProject(currentProject)}
-              className={`relative w-full max-w-5xl aspect-[16/10] md:aspect-[16/9] ${currentProject.isComingSoon ? 'cursor-default' : 'cursor-pointer'} group shadow-2xl transition-transform duration-300 hover:scale-[1.01]`}
-              data-circle-cursor={currentProject.isComingSoon ? '' : 'VIEW'}
-            >
-              {/* Organic Wavy Image Container */}
+            {/* Project Image Card */}
+            {currentProject.isComingSoon ? (
               <div
-                className="w-full h-full bg-[#0d0d0d] overflow-hidden relative border border-white/10 flex flex-col items-center justify-center p-6 text-center"
-                style={{ clipPath: 'url(#unshift-wavy-clip)' }}
+                ref={imageCardRef}
+                className="flex flex-col items-center justify-center py-20 md:py-32 text-center cursor-default select-none pointer-events-none"
+                style={{ animation: 'float-coming-soon 4s ease-in-out infinite' }}
               >
-                {currentProject.isComingSoon ? (
-                  <>
-                    {/* Subtle grid pattern overlay */}
-                    <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:24px_24px]" />
-
-                    {/* Unshift.jp exact typography: "and more..." */}
-                    <h3 className="font-sans font-black text-6xl md:text-8xl lg:text-9xl text-white tracking-tight lowercase z-10 drop-shadow-2xl select-none">
-                      and more...
-                    </h3>
-                    <p className="font-jura text-xs md:text-sm font-extrabold tracking-[0.25em] text-[#D4FF90] uppercase mt-4 z-10">
-                      WORKS — MORE PROJECTS COMING SOON
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <img
-                      src={currentProject.image}
-                      alt={currentProject.title}
-                      className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500" />
-                  </>
-                )}
+                <style>{`
+                  @keyframes float-coming-soon {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-16px); }
+                  }
+                `}</style>
+                <h3 className="font-sans font-black text-6xl md:text-8xl lg:text-9.5xl text-white tracking-tight lowercase leading-none drop-shadow-[0_10px_35px_rgba(212,255,144,0.18)]">
+                  and more...
+                </h3>
+                <p className="font-jura text-xs md:text-sm font-black tracking-[0.3em] text-[#D4FF90] uppercase mt-6 animate-pulse">
+                  MORE PROJECTS COMING SOON
+                </p>
               </div>
+            ) : (
+              <div
+                ref={imageCardRef}
+                onClick={() => setSelectedProject(currentProject)}
+                className="relative w-full max-w-5xl aspect-[16/10] md:aspect-[16/9] cursor-pointer group shadow-2xl transition-transform duration-300 hover:scale-[1.01]"
+                data-circle-cursor="VIEW"
+              >
+                {/* Image Container */}
+                <div
+                  className="w-full h-full bg-[#0d0d0d] overflow-hidden relative border border-white/10"
+                >
+                  <img
+                    src={currentProject.image}
+                    alt={currentProject.title}
+                    className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500" />
+                </div>
 
-              {/* Inverted Light Badge Titles (Crisp Contrast on Dark Theme) */}
-              {!currentProject.isComingSoon && (
+                {/* Inverted Light Badge Titles (Crisp Contrast on Dark Theme) */}
                 <div className="absolute -bottom-4 left-4 md:-bottom-6 md:left-8 z-20 flex flex-col items-start gap-1 pointer-events-none">
                   <div className="bg-white text-black px-3 py-1.5 md:px-4 md:py-2 rounded-sm shadow-2xl">
                     <h3 className="font-jura text-xl md:text-3xl font-black tracking-wide uppercase">
@@ -239,23 +240,19 @@ export default function Work() {
                     </p>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Bottom Controls Bar (Dark Theme) */}
           <div className="relative z-10 flex flex-col items-center gap-3 w-full">
             {/* Interactive Hints */}
-            <div className="flex items-center gap-6 text-gray-400 font-jura text-[11px] md:text-xs tracking-wider font-semibold">
+            <div className="flex items-center gap-4 text-gray-400 font-jura text-[11px] md:text-xs tracking-wider font-semibold">
               <span className="flex items-center gap-1.5">
                 <kbd className="px-1.5 py-0.5 bg-white/10 text-white border border-white/20 text-[10px] rounded font-mono">
                   ← →
                 </kbd>{' '}
                 press arrow key
-              </span>
-              <span className="hidden md:inline text-white/20">|</span>
-              <span className="hidden md:flex items-center gap-1.5">
-                <span className="font-mono text-[#D4FF90]">🖰</span> mouse scroll
               </span>
               <span className="hidden md:inline text-white/20">|</span>
               <span>tap image to view details</span>
@@ -265,7 +262,10 @@ export default function Work() {
             <div className="flex items-center gap-6">
               <button
                 onClick={handlePrev}
-                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90] transition-colors cursor-pointer font-mono text-sm"
+                disabled={activeIndex === 0}
+                className={`w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 cursor-pointer font-mono text-sm ${
+                  activeIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90]'
+                }`}
                 aria-label="Previous project"
               >
                 ‹
@@ -277,7 +277,10 @@ export default function Work() {
 
               <button
                 onClick={handleNext}
-                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90] transition-colors cursor-pointer font-mono text-sm"
+                disabled={activeIndex === projects.length - 1}
+                className={`w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 cursor-pointer font-mono text-sm ${
+                  activeIndex === projects.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90]'
+                }`}
                 aria-label="Next project"
               >
                 ›

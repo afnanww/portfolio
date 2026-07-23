@@ -285,11 +285,11 @@ export default function Profile() {
           {/* Left Column: Bio Paragraphs with Highlighted Keywords */}
           <div ref={textRef} className="lg:col-span-7 space-y-5 text-stone-700 font-sans text-sm md:text-base leading-relaxed max-w-xl relative z-20 pb-4">
             <p className="overview-paragraph">
-              I'm a <strong className="text-black font-extrabold">Software Engineering graduate</strong> based in Malaysia, with hands-on experience building full-stack systems — from internal business tools to production-level web apps. I've worked across the stack, and I'm comfortable picking up whatever a project needs.
+              I'm a <strong className="text-black font-extrabold">Software Engineering graduate</strong> based in Malaysia, with hands-on experience building full-stack systems from internal business tools to production level web apps. I've worked across the stack, and I'm comfortable picking up whatever a project needs.
             </p>
 
             <p className="overview-paragraph">
-              One of my proudest builds is <strong className="text-black font-extrabold underline decoration-black/40 decoration-2 underline-offset-4">ParcelKMPK</strong> — a live parcel management system I independently designed and shipped after spotting a real operational gap for a client. I like solving problems that actually matter.
+              One of my proudest builds is <strong className="text-black font-extrabold underline decoration-black/40 decoration-2 underline-offset-4">ParcelKMPK</strong> a live parcel management system, independently designed and shipped after spotting a real operational gap for a client. Enthusiastic in solving problems that actually matter.
             </p>
           </div>
 
