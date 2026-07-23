@@ -140,6 +140,34 @@ export default function Work() {
         { scale: 0.96, opacity: 0.8 },
         { scale: 1, opacity: 1, duration: 0.5, ease: 'power2.out' }
       );
+
+      // Typography reveal for "and more..." slide
+      if (currentProject.isComingSoon) {
+        const chars = imageCardRef.current.querySelectorAll('.coming-soon-char');
+        const sub = imageCardRef.current.querySelector('.coming-soon-sub');
+
+        gsap.fromTo(
+          chars,
+          { opacity: 0, y: -40, rotateX: -90 },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 0.6,
+            ease: 'back.out(1.7)',
+            stagger: 0.04,
+            delay: 0.15,
+          }
+        );
+
+        if (sub) {
+          gsap.fromTo(
+            sub,
+            { opacity: 0, y: 15 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', delay: 0.7 }
+          );
+        }
+      }
     }
   }, [activeIndex, selectedProject]);
 
@@ -193,18 +221,22 @@ export default function Work() {
               <div
                 ref={imageCardRef}
                 className="flex flex-col items-center justify-center py-20 md:py-32 text-center cursor-default select-none pointer-events-none"
-                style={{ animation: 'float-coming-soon 4s ease-in-out infinite' }}
               >
-                <style>{`
-                  @keyframes float-coming-soon {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-16px); }
-                  }
-                `}</style>
-                <h3 className="font-sans font-black text-6xl md:text-8xl lg:text-9.5xl text-white tracking-tight lowercase leading-none drop-shadow-[0_10px_35px_rgba(212,255,144,0.18)]">
-                  and more...
+                <h3 className="coming-soon-title font-sans font-black text-6xl md:text-8xl lg:text-[9rem] text-white tracking-tight lowercase leading-none drop-shadow-[0_10px_35px_rgba(212,255,144,0.18)]">
+                  {'and more...'.split('').map((char, i) => (
+                    <span
+                      key={i}
+                      className="coming-soon-char inline-block"
+                      style={{ opacity: 0, transform: 'translateY(-40px)' }}
+                    >
+                      {char === ' ' ? '\u00A0' : char}
+                    </span>
+                  ))}
                 </h3>
-                <p className="font-jura text-xs md:text-sm font-black tracking-[0.3em] text-[#D4FF90] uppercase mt-6 animate-pulse">
+                <p
+                  className="coming-soon-sub font-jura text-xs md:text-sm font-black tracking-[0.3em] text-[#D4FF90] uppercase mt-6"
+                  style={{ opacity: 0 }}
+                >
                   MORE PROJECTS COMING SOON
                 </p>
               </div>
