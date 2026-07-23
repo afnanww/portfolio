@@ -13,6 +13,7 @@ export interface Project {
   year: string;
   tags: string[];
   link: string;
+  isComingSoon?: boolean;
 }
 
 export const projects: Project[] = [
@@ -59,32 +60,18 @@ export const projects: Project[] = [
     link: '#',
   },
   {
-    id: 'jxl',
+    id: 'andmore',
     num: '04',
-    title: 'JXL Inc.',
-    subtitle: 'Digital Showcase',
-    category: 'Brand Site',
-    role: 'Front-end',
-    description:
-      'Modern agency portal featuring liquid typography shaders, dynamic cursor responses, and fluid media galleries built for creative showcases.',
-    image: '/images/project1.jpg',
-    year: '2023',
-    tags: ['React', 'GLSL Shaders', 'Lenis Scroll', 'Framer Motion'],
+    title: 'and more...',
+    subtitle: 'MORE PROJECTS COMING SOON',
+    category: 'Upcoming',
+    role: 'Developer',
+    description: 'More creative projects, WebGL experiments, and full-stack systems currently under development.',
+    image: '',
+    year: '2026',
+    tags: ['Upcoming'],
     link: '#',
-  },
-  {
-    id: 'spicato',
-    num: '05',
-    title: 'spicato Inc.',
-    subtitle: 'Interactive Experience',
-    category: 'Website',
-    role: 'Full-Stack',
-    description:
-      'Full-stack digital brand site with seamless page transitions, dark/light theme switching, and real-time backend API integration.',
-    image: '/images/project2.jpg',
-    year: '2023',
-    tags: ['TypeScript', 'React', 'Node.js', 'TailwindCSS', 'WebGL'],
-    link: '#',
+    isComingSoon: true,
   },
 ];
 
@@ -204,36 +191,55 @@ export default function Work() {
             {/* Project Image Card with Organic Wavy Frame */}
             <div
               ref={imageCardRef}
-              onClick={() => setSelectedProject(currentProject)}
-              className="relative w-full max-w-5xl aspect-[16/10] md:aspect-[16/9] cursor-pointer group shadow-2xl transition-transform duration-300 hover:scale-[1.01]"
-              data-circle-cursor="VIEW"
+              onClick={() => !currentProject.isComingSoon && setSelectedProject(currentProject)}
+              className={`relative w-full max-w-5xl aspect-[16/10] md:aspect-[16/9] ${currentProject.isComingSoon ? 'cursor-default' : 'cursor-pointer'} group shadow-2xl transition-transform duration-300 hover:scale-[1.01]`}
+              data-circle-cursor={currentProject.isComingSoon ? '' : 'VIEW'}
             >
               {/* Organic Wavy Image Container */}
               <div
-                className="w-full h-full bg-[#0d0d0d] overflow-hidden relative border border-white/10"
+                className="w-full h-full bg-[#0d0d0d] overflow-hidden relative border border-white/10 flex flex-col items-center justify-center p-6 text-center"
                 style={{ clipPath: 'url(#unshift-wavy-clip)' }}
               >
-                <img
-                  src={currentProject.image}
-                  alt={currentProject.title}
-                  className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500" />
+                {currentProject.isComingSoon ? (
+                  <>
+                    {/* Subtle grid pattern overlay */}
+                    <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:24px_24px]" />
+
+                    {/* Unshift.jp exact typography: "and more..." */}
+                    <h3 className="font-sans font-black text-6xl md:text-8xl lg:text-9xl text-white tracking-tight lowercase z-10 drop-shadow-2xl select-none">
+                      and more...
+                    </h3>
+                    <p className="font-jura text-xs md:text-sm font-extrabold tracking-[0.25em] text-[#D4FF90] uppercase mt-4 z-10">
+                      WORKS — MORE PROJECTS COMING SOON
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src={currentProject.image}
+                      alt={currentProject.title}
+                      className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500" />
+                  </>
+                )}
               </div>
 
               {/* Inverted Light Badge Titles (Crisp Contrast on Dark Theme) */}
-              <div className="absolute -bottom-4 left-4 md:-bottom-6 md:left-8 z-20 flex flex-col items-start gap-1 pointer-events-none">
-                <div className="bg-white text-black px-3 py-1.5 md:px-4 md:py-2 rounded-sm shadow-2xl">
-                  <h3 className="font-jura text-xl md:text-3xl font-black tracking-wide uppercase">
-                    {currentProject.title}
-                  </h3>
+              {!currentProject.isComingSoon && (
+                <div className="absolute -bottom-4 left-4 md:-bottom-6 md:left-8 z-20 flex flex-col items-start gap-1 pointer-events-none">
+                  <div className="bg-white text-black px-3 py-1.5 md:px-4 md:py-2 rounded-sm shadow-2xl">
+                    <h3 className="font-jura text-xl md:text-3xl font-black tracking-wide uppercase">
+                      {currentProject.title}
+                    </h3>
+                  </div>
+                  <div className="bg-white/95 text-black px-2.5 py-1 md:px-3.5 md:py-1.5 rounded-sm shadow-xl">
+                    <p className="font-jura text-sm md:text-base font-extrabold tracking-wider text-stone-900">
+                      {currentProject.subtitle}
+                    </p>
+                  </div>
                 </div>
-                <div className="bg-white/95 text-black px-2.5 py-1 md:px-3.5 md:py-1.5 rounded-sm shadow-xl">
-                  <p className="font-jura text-sm md:text-base font-extrabold tracking-wider text-stone-900">
-                    {currentProject.subtitle}
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -396,9 +402,10 @@ export default function Work() {
 
           {/* Bottom PREV / NEXT Project Navigation Strip (Unshift studiodetails exact match) */}
           {(() => {
-            const currentIndex = projects.findIndex((p) => p.id === selectedProject.id);
-            const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
-            const nextProject = projects[(currentIndex + 1) % projects.length];
+            const activeProjects = projects.filter((p) => !p.isComingSoon);
+            const currentIndex = activeProjects.findIndex((p) => p.id === selectedProject.id);
+            const prevProject = activeProjects[(currentIndex - 1 + activeProjects.length) % activeProjects.length];
+            const nextProject = activeProjects[(currentIndex + 1) % activeProjects.length];
 
             return (
               <div className="w-full grid grid-cols-2 gap-4 md:gap-6 pt-6 border-t border-white/10 mt-auto">
