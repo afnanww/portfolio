@@ -22,6 +22,7 @@ export default function Contact() {
 
   // Chatbot State
   const [showChatbot, setShowChatbot] = useState(false);
+  const [hasClickedContact, setHasClickedContact] = useState(false);
   const [inquiryType, setInquiryType] = useState<'email' | 'phone' | null>(null);
 
   // Sequential Typing & Timing States
@@ -174,6 +175,7 @@ export default function Contact() {
     e.preventDefault();
     if (link.isContact) {
       setShowChatbot(true);
+      setHasClickedContact(true);
     } else {
       setShowChatbot(false);
       const target = document.querySelector(link.href);
@@ -260,7 +262,7 @@ export default function Contact() {
             </div>
 
             {/* Column 2 */}
-            <div className="space-y-2.5">
+            <div className="relative space-y-2.5">
               {navCol2.map((link) => {
                 const isActiveContact = link.isContact && showChatbot;
                 return (
@@ -285,6 +287,32 @@ export default function Contact() {
                   </a>
                 );
               })}
+
+              {/* Red Hand-Drawn Arrow & "click here" indicator pointing directly to CONTACT */}
+              {!showChatbot && !hasClickedContact && (
+                <div
+                  onClick={() => {
+                    setShowChatbot(true);
+                    setHasClickedContact(true);
+                  }}
+                  className="absolute -bottom-16 -left-8 md:-bottom-20 md:-left-14 flex flex-col items-center cursor-pointer pointer-events-auto group z-20 animate-bounce duration-1000"
+                >
+                  <svg
+                    className="w-14 h-12 md:w-20 md:h-16 text-red-600 stroke-current fill-none transform group-hover:scale-110 transition-transform drop-shadow-sm"
+                    viewBox="0 0 100 70"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    {/* Hand-drawn looped arrow pointing up-right to CONTACT */}
+                    <path d="M 12 55 C 22 45 28 48 24 38 C 20 28 32 35 48 30 C 64 25 72 18 82 8" />
+                    <path d="M 64 8 L 84 7 L 80 25" />
+                  </svg>
+                  <span className="font-mono text-red-600 font-extrabold text-sm md:text-base tracking-wider transform -rotate-6 select-none -mt-2 group-hover:underline">
+                    click here
+                  </span>
+                </div>
+              )}
             </div>
           </nav>
         </div>
@@ -503,8 +531,9 @@ export default function Contact() {
               <div className="flex items-end gap-2.5 animate-in fade-in slide-in-from-bottom-3 zoom-in-95 duration-500 ease-out">
                 <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3.5 shadow-sm max-w-[82%]">
                   <p className="font-sans text-base md:text-lg text-stone-800 leading-relaxed font-medium">
-                    Telephone inquiry ♡<br />
-                    Mon – Fri: 9:00 AM – 6:00 PM MYT
+                    Telephone inquiry <br />
+                    Available on call, WhatsApp and Telegram!
+
                   </p>
                 </div>
                 <span className="font-mono text-[11px] text-stone-400 select-none whitespace-nowrap pb-1">
@@ -531,7 +560,7 @@ export default function Contact() {
                   href="mailto:afnanwajdi@email.com"
                   className="inline-block bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm font-sans text-base md:text-lg text-stone-700 hover:text-black transition-colors underline underline-offset-2 font-medium"
                 >
-                  afnanwajdi@email.com
+                  afnanwajdi@gmail.com
                 </a>
                 <span className="font-mono text-[11px] text-stone-400 select-none whitespace-nowrap pb-1">
                   {currentTime}
@@ -545,7 +574,7 @@ export default function Contact() {
                   href="tel:+60123456789"
                   className="inline-block bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm font-sans text-base md:text-lg text-stone-700 hover:text-black transition-colors underline underline-offset-2 font-medium"
                 >
-                  +60 12-345 6789
+                  +60 10-8106400
                 </a>
                 <span className="font-mono text-[11px] text-stone-400 select-none whitespace-nowrap pb-1">
                   {currentTime}
@@ -581,9 +610,7 @@ export default function Contact() {
                 </div>
               </div>
             )}
-
-            <span>AFNAN WAJDI CONTACT BOT</span>
-            <span>PRESS » TO CLOSE</span>
+            <span>LET'S CONNECT</span>
           </div>
         </div>
       )}

@@ -47,8 +47,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://www.anthropic.com',
         color: '#D9826C', // Terracotta
         icon: 'ai',
-        x: 34,
-        y: 16,
+        x: 30,
+        y: 8,
         depth: 1.2,
       },
       {
@@ -63,8 +63,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://www.anthropic.com',
         color: '#9FB8AD', // Sage green
         icon: 'code',
-        x: 46,
-        y: 14,
+        x: 44,
+        y: 7,
         depth: 0.9,
       },
       {
@@ -79,8 +79,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://www.anthropic.com',
         color: '#8A87C6', // Lavender
         icon: 'ai',
-        x: 62,
-        y: 14,
+        x: 64,
+        y: 7,
         depth: 1.4,
       },
       {
@@ -134,125 +134,27 @@ const providerHubsData: ProviderHub[] = [
     ],
   },
   {
-    id: 'hub-meta',
-    name: 'Meta',
-    subtitle: 'Front-End Architecture & React',
-    x: 18,
-    y: 65,
-    certs: [
-      {
-        id: 'cert-meta-1',
-        title: 'Meta Front-End Developer Professional Certificate',
-        issuer: 'Meta',
-        date: '2024',
-        credentialId: 'META-FE-984210',
-        description: 'Advanced mastery in modern React, state management, web performance optimization, accessibility standards, and responsive UI design systems.',
-        skills: ['React.js', 'JavaScript ES6+', 'UI/UX', 'Performance', 'CSS3'],
-        image: '/images/cert_meta.jpg',
-        verifyUrl: 'https://www.coursera.org/account/accomplishments/professional-cert/meta',
-        color: '#D9826C', // Terracotta
-        icon: 'code',
-        x: 10,
-        y: 54,
-        depth: 1.2,
-      },
-      {
-        id: 'cert-meta-2',
-        title: 'Meta Advanced React & State Architecture',
-        issuer: 'Meta',
-        date: '2024',
-        credentialId: 'META-REACT-7712',
-        description: 'Deep dive into React internals, custom hooks, context optimization, SSR paradigms, and complex state management.',
-        skills: ['React', 'Redux Toolkit', 'Hooks', 'SSR', 'TypeScript'],
-        image: '/images/cert_meta.jpg',
-        verifyUrl: 'https://www.coursera.org/verify/meta-react',
-        color: '#9FB8AD', // Sage green
-        icon: 'code',
-        x: 26,
-        y: 78,
-        depth: 0.9,
-      },
-    ],
-  },
-  {
     id: 'hub-hackerrank',
     name: 'HackerRank',
-    subtitle: 'Algorithms & Problem Solving',
-    x: 42,
-    y: 76,
+    subtitle: 'Problem Solving & C Programming',
+    x: 30,
+    y: 72,
     certs: [
       {
         id: 'cert-hr-1',
-        title: 'HackerRank Software Engineer & Problem Solving (Gold)',
+        title: 'C Language Proficiency Certificate',
         issuer: 'HackerRank',
         date: '2024',
-        credentialId: 'HR-GOLD-77491',
-        description: 'Verified top percentile problem solving expertise, complex algorithms execution, data structure optimization, and clean code practices.',
-        skills: ['Algorithms', 'Data Structures', 'Problem Solving', 'TypeScript'],
-        image: '/images/cert_hackerrank.jpg',
+        credentialId: 'HR-C-FOUNDATION',
+        description: 'Verified C programming proficiency covering pointers, memory management, data structures, and systems-level problem solving.',
+        skills: ['C Programming', 'Pointers', 'Memory Management', 'Data Structures'],
+        image: '/images/cert/hackerrank/cfoundation.PNG',
         verifyUrl: 'https://www.hackerrank.com/certificates',
-        color: '#E5C2AF', // Peach
-        icon: 'algorithm',
-        x: 34,
-        y: 86,
-        depth: 1.1,
-      },
-      {
-        id: 'cert-hr-2',
-        title: 'HackerRank JavaScript & Node.js Advanced',
-        issuer: 'HackerRank',
-        date: '2024',
-        credentialId: 'HR-JS-88210',
-        description: 'Asynchronous event loops, memory management, closures, microtask queues, and high-performance server APIs.',
-        skills: ['JavaScript ES6+', 'Node.js', 'Asynchronous JS', 'Event Loop'],
-        image: '/images/cert_hackerrank.jpg',
-        verifyUrl: 'https://www.hackerrank.com/certificates/js',
-        color: '#A2B59F', // Moss green
+        color: '#E5C2AF',
         icon: 'code',
-        x: 50,
-        y: 88,
-        depth: 1.3,
-      },
-    ],
-  },
-  {
-    id: 'hub-aws',
-    name: 'AWS & WebGL',
-    subtitle: 'Cloud Infrastructure & 3D Shaders',
-    x: 82,
-    y: 65,
-    certs: [
-      {
-        id: 'cert-aws-1',
-        title: 'AWS Certified Cloud Practitioner',
-        issuer: 'Amazon Web Services',
-        date: '2023',
-        credentialId: 'AWS-CCP-44021',
-        description: 'Comprehensive understanding of AWS Cloud architecture, serverless computing, deployment pipelines, IAM security, and edge caching networks.',
-        skills: ['AWS S3/CloudFront', 'Lambda', 'DevOps', 'Security', 'Cloud Architecture'],
-        image: '/images/cert_aws.jpg',
-        verifyUrl: 'https://aws.amazon.com/verification',
-        color: '#8A87C6', // Lavender
-        icon: 'cloud',
-        x: 90,
-        y: 54,
-        depth: 1.5,
-      },
-      {
-        id: 'cert-aws-3',
-        title: 'Three.js & WebGL Graphics Mastery',
-        issuer: 'Three.js Journey',
-        date: '2024',
-        credentialId: 'THREEJS-3D-9941',
-        description: 'Advanced 3D scene creation, custom GLSL shaders, camera controls, post-processing effects, and performance optimization for web browsers.',
-        skills: ['Three.js', 'GLSL Shaders', 'WebGL', 'Canvas API', '3D Math'],
-        image: '/images/cert_threejs.jpg',
-        verifyUrl: 'https://threejs-journey.com/certificate',
-        color: '#E5C2AF', // Peach
-        icon: 'cube',
-        x: 74,
-        y: 78,
-        depth: 1.3,
+        x: 22,
+        y: 62,
+        depth: 1.1,
       },
     ],
   },
@@ -388,12 +290,12 @@ export default function Certificates() {
       </svg>
 
       {/* Center Main Header Text (Anthropic Hero Style) */}
-      <div className="relative z-10 text-center my-auto max-w-2xl mx-auto pointer-events-none">
-
-        <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-tight text-[#111111] font-normal leading-[1.1]">
-          Certifications & Credentials
-        </h2>
-
+      <div className="relative z-30 text-center my-auto max-w-2xl mx-auto pointer-events-none">
+        <div className="px-8 py-4 rounded-2xl backdrop-blur-sm bg-[rgba(243,241,237,0.75)]">
+          <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-tight text-[#111111] font-normal leading-[1.1]">
+            Certifications & Credentials
+          </h2>
+        </div>
       </div>
 
       {/* Provider Hub Headings & Radiating Certificate Square Tiles (Anthropic Exact Reference) */}
