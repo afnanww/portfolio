@@ -430,9 +430,6 @@ export default function Certificates() {
                 <span className="font-jura text-xs font-bold uppercase tracking-widest px-3 py-1 rounded bg-black/5 text-black/70">
                   {selectedCert.issuer} Verified
                 </span>
-                <span className="font-mono text-xs text-black/50">
-                  ID: {selectedCert.credentialId}
-                </span>
               </div>
 
               <button
@@ -448,7 +445,7 @@ export default function Certificates() {
               {/* Left Column: Title & Description Information */}
               <div className="md:col-span-6 space-y-5">
                 <span className="font-jura text-xs uppercase tracking-[0.3em] text-black/50 block">
-                  Issued {selectedCert.date} • {selectedCert.issuer}
+                  Issuer: {selectedCert.issuer}
                 </span>
 
                 <h2 className="font-serif text-2xl md:text-4xl font-normal text-[#111111] leading-tight">
@@ -474,18 +471,6 @@ export default function Certificates() {
                       </span>
                     ))}
                   </div>
-                </div>
-
-                {/* CTA External Link */}
-                <div className="pt-2">
-                  <a
-                    href={selectedCert.verifyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 px-5 py-3 bg-[#191919] text-white font-jura text-xs tracking-widest uppercase font-semibold rounded-full hover:bg-black transition-all hover:gap-4 shadow-md"
-                  >
-                    Verify Official Credential <span className="text-sm">→</span>
-                  </a>
                 </div>
               </div>
 
