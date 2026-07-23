@@ -112,39 +112,49 @@ export default function Profile() {
         {/* Content Container (Layer 2 z-20 for text, z-30 for portrait overlapping OVERVIEW) */}
         <div className="relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start mt-4 md:mt-6">
           {/* Left Column: Bio Paragraphs with Highlighted Keywords (Reference Match) */}
-          <div ref={textRef} className="lg:col-span-7 space-y-4 text-stone-800 font-sans text-sm md:text-base lg:text-lg leading-relaxed max-w-xl relative z-20">
+          <div ref={textRef} className="lg:col-span-7 space-y-5 text-stone-700 font-sans text-sm md:text-base leading-relaxed max-w-xl relative z-20">
             <p className="overview-paragraph">
-              I'm a <strong className="text-black font-extrabold underline decoration-black/60 decoration-2 underline-offset-4">Kuala Lumpur-based frontend engineer</strong> with experience across interactive WebGL, 3D browser scenes, and modern web application architecture. I work across all stages of frontend design and development, from initial concept to production.
-            </p>
-
-            <p className="overview-paragraph">
-              During my engineering journey at <strong className="text-black font-extrabold">Asia Pacific University</strong>, I completed projects specializing in <strong className="text-black font-extrabold">Three.js, React, and GSAP animation engines</strong>, contributing to <strong className="text-black font-extrabold">interactive brand showcases</strong> and high-performance browser interfaces.
+              I'm a <strong className="text-black font-extrabold">Software Engineering graduate</strong> based in Malaysia, with hands-on experience building full-stack systems — from internal business tools to production-level web apps. I've worked across the stack, and I'm comfortable picking up whatever a project needs.
             </p>
 
             <p className="overview-paragraph">
-              I'm proficient in <strong className="text-black font-extrabold">React, TypeScript, Three.js, WebGL, TailwindCSS, and Node.js</strong>, regularly creating custom shaders, canvas graphics, and fluid micro-interactions as part of my workflow.
+              One of my proudest builds is <strong className="text-black font-extrabold underline decoration-black/40 decoration-2 underline-offset-4">ParcelKMPK</strong> — a live parcel management system I independently designed and shipped after spotting a real operational gap for a client. I like solving problems that actually matter.
             </p>
 
-            <p className="overview-paragraph pt-1">
-              I'm currently looking for a <strong className="text-black font-extrabold underline decoration-black/60 decoration-2 underline-offset-4">frontend / WebGL role</strong> in a studio where visual craft, interactive quality, and technical detail are taken seriously.
-            </p>
+            {/* Architectural Technical Skills Matrix */}
+            <div className="overview-paragraph pt-3 border-t border-black/10 space-y-3.5">
+              <div className="flex items-center justify-between">
+                <span className="font-jura text-xs uppercase tracking-[0.25em] font-bold text-black/80 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-black inline-block" />
+                  Technical Stack & Capabilities
+                </span>
+              </div>
 
-            {/* Quick Action Button */}
-            <div className="overview-paragraph pt-2 flex items-center gap-6">
-              <a
-                href="#work"
-                className="group inline-flex items-center gap-3 px-7 py-3 bg-black text-white font-medium text-xs md:text-sm tracking-wide rounded-full hover:bg-stone-800 transition-colors duration-300 shadow-xl"
-              >
-                View Works
-                <svg
-                  className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
+              <div className="grid grid-cols-1 gap-3">
+                {[
+                  { label: 'LANGUAGES', tags: ['JavaScript', 'PHP', 'Java', 'C#', 'Python', 'HTML/CSS'] },
+                  { label: 'FRONTEND', tags: ['React', 'Three.js', 'Tailwind CSS', 'GSAP'] },
+                  { label: 'BACKEND', tags: ['Laravel', 'Node.js', 'Express.js', 'CodeIgniter', 'REST API'] },
+                  { label: 'DATABASES', tags: ['MySQL', 'PostgreSQL', 'Oracle DB'] },
+                  { label: 'TOOLS', tags: ['Git', 'GitHub Actions', 'CI/CD', 'Gemini LLM', 'Agile'] },
+                ].map(({ label, tags }) => (
+                  <div key={label} className="group/cat flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 py-1.5 border-b border-black/5 hover:border-black/15 transition-colors">
+                    <span className="font-jura text-[10px] font-bold tracking-[0.2em] text-stone-400 group-hover/cat:text-black transition-colors w-24 shrink-0 uppercase">
+                      {label}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5 flex-1">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="font-sans text-[11px] font-medium px-3 py-1 rounded-md border border-stone-300/80 bg-white/80 text-stone-800 shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:bg-black hover:text-white hover:border-black hover:-translate-y-0.5 transition-all duration-200 cursor-default select-none"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

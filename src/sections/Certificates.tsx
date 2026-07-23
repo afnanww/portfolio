@@ -33,7 +33,7 @@ const providerHubsData: ProviderHub[] = [
     name: 'Anthropic',
     subtitle: 'Claude AI, MCP Protocol & Agentic Engineering',
     x: 50,
-    y: 28,
+    y: 22,
     certs: [
       {
         id: 'cert-ant-1',
@@ -47,8 +47,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://www.anthropic.com',
         color: '#D9826C', // Terracotta
         icon: 'ai',
-        x: 30,
-        y: 8,
+        x: 18,
+        y: 16,
         depth: 1.2,
       },
       {
@@ -63,8 +63,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://www.anthropic.com',
         color: '#9FB8AD', // Sage green
         icon: 'code',
-        x: 44,
-        y: 7,
+        x: 34,
+        y: 10,
         depth: 0.9,
       },
       {
@@ -79,8 +79,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://www.anthropic.com',
         color: '#8A87C6', // Lavender
         icon: 'ai',
-        x: 64,
-        y: 7,
+        x: 66,
+        y: 10,
         depth: 1.4,
       },
       {
@@ -95,8 +95,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://www.anthropic.com',
         color: '#E5C2AF', // Peach
         icon: 'ai',
-        x: 66,
-        y: 32,
+        x: 82,
+        y: 16,
         depth: 1.1,
       },
       {
@@ -111,8 +111,8 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://aws.amazon.com/bedrock/claude',
         color: '#A2B59F', // Moss green
         icon: 'cloud',
-        x: 32,
-        y: 34,
+        x: 24,
+        y: 32,
         depth: 1.0,
       },
       {
@@ -127,34 +127,75 @@ const providerHubsData: ProviderHub[] = [
         verifyUrl: 'https://cloud.google.com/vertex-ai',
         color: '#D9826C', // Terracotta
         icon: 'cloud',
-        x: 50,
-        y: 40,
+        x: 76,
+        y: 32,
         depth: 1.3,
+      },
+    ],
+  },
+  {
+    id: 'hub-freecodecamp',
+    name: 'freeCodeCamp',
+    subtitle: 'C Programming & CS Foundations',
+    x: 28,
+    y: 68,
+    certs: [
+      {
+        id: 'cert-fcc-1',
+        title: 'C Language & Systems Programming Certificate',
+        issuer: 'freeCodeCamp',
+        date: '2024',
+        credentialId: 'FCC-C-FOUNDATION',
+        description: 'Core computer science principles, C language syntax, memory allocation, pointers, and foundational algorithms.',
+        skills: ['C Programming', 'Pointers', 'Memory Management', 'Data Structures'],
+        image: '/images/cert/freeCodeCamp/cfoundation.webp',
+        verifyUrl: 'https://www.freecodecamp.org',
+        color: '#9FB8AD', // Sage green
+        icon: 'code',
+        x: 20,
+        y: 84,
+        depth: 1.1,
       },
     ],
   },
   {
     id: 'hub-hackerrank',
     name: 'HackerRank',
-    subtitle: 'Problem Solving & C Programming',
-    x: 30,
-    y: 72,
+    subtitle: 'Database Architecture & SQL Specialization',
+    x: 72,
+    y: 68,
     certs: [
       {
-        id: 'cert-hr-1',
-        title: 'C Language Proficiency Certificate',
+        id: 'cert-hr-sql-basic',
+        title: 'SQL (Basic) Certificate',
         issuer: 'HackerRank',
         date: '2024',
-        credentialId: 'HR-C-FOUNDATION',
-        description: 'Verified C programming proficiency covering pointers, memory management, data structures, and systems-level problem solving.',
-        skills: ['C Programming', 'Pointers', 'Memory Management', 'Data Structures'],
-        image: '/images/cert/hackerrank/cfoundation.PNG',
+        credentialId: 'HR-SQL-BASIC-9921',
+        description: 'Relational database fundamentals, SELECT queries, filtering, aggregation, table joins, and basic schema design.',
+        skills: ['SQL', 'Relational Databases', 'Queries', 'Data Aggregation'],
+        image: '/images/cert/hackerrank/sql_basic certificate.webp',
         verifyUrl: 'https://www.hackerrank.com/certificates',
-        color: '#E5C2AF',
-        icon: 'code',
-        x: 22,
-        y: 62,
-        depth: 1.1,
+        color: '#8A87C6', // Lavender
+        icon: 'database',
+        x: 64,
+        y: 84,
+        depth: 1.0,
+      },
+      {
+        id: 'cert-hr-sql-intermediate',
+        title: 'SQL (Intermediate) Certificate',
+        issuer: 'HackerRank',
+        date: '2024',
+        credentialId: 'HR-SQL-INT-4412',
+        description: 'Advanced query construction, complex multi-table JOINs, subqueries, window functions, and database performance tuning.',
+        skills: ['Advanced SQL', 'Subqueries', 'Window Functions', 'Query Optimization'],
+        image: '/images/cert/hackerrank/sql_intermediate certificate.webp',
+        verifyUrl: 'https://www.hackerrank.com/certificates',
+        color: '#E5C2AF', // Peach
+        icon: 'database',
+        x: 80,
+        y: 84,
+        depth: 1.3,
       },
     ],
   },
@@ -290,12 +331,12 @@ export default function Certificates() {
       </svg>
 
       {/* Center Main Header Text (Anthropic Hero Style) */}
-      <div className="relative z-30 text-center my-auto max-w-2xl mx-auto pointer-events-none">
-        <div className="px-8 py-4 rounded-2xl backdrop-blur-sm bg-[rgba(243,241,237,0.75)]">
-          <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-tight text-[#111111] font-normal leading-[1.1]">
-            Certifications & Credentials
-          </h2>
-        </div>
+      <div className="relative z-10 text-center my-auto max-w-2xl mx-auto pointer-events-none">
+
+        <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-tight text-[#111111] font-normal leading-[1.1]">
+          Certifications & Credentials
+        </h2>
+
       </div>
 
       {/* Provider Hub Headings & Radiating Certificate Square Tiles (Anthropic Exact Reference) */}
