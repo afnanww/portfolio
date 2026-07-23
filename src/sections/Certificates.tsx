@@ -359,11 +359,8 @@ export default function Certificates() {
                 alt={hub.name}
                 loading="lazy"
                 decoding="async"
-                className="h-8 md:h-10 w-auto mx-auto object-contain"
+                className="h-10 md:h-14 lg:h-16 w-auto mx-auto object-contain"
               />
-              <p className="font-sans text-xs text-stone-500 mt-1.5 max-w-[220px] mx-auto leading-snug">
-                {hub.subtitle}
-              </p>
             </div>
 
             {/* Radiating Square Tile Certificate Nodes */}
