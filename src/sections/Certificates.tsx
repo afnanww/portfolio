@@ -21,6 +21,7 @@ export interface CertificateItem {
 export interface ProviderHub {
   id: string;
   name: string;
+  logo: string; // path to provider logo image
   subtitle: string;
   x: number; // hub center position x%
   y: number; // hub center position y%
@@ -31,6 +32,7 @@ const providerHubsData: ProviderHub[] = [
   {
     id: 'hub-anthropic',
     name: 'Anthropic',
+    logo: '/images/cert/anthropic_ogo.webp',
     subtitle: 'Claude AI, MCP Protocol & Agentic Engineering',
     x: 50,
     y: 22,
@@ -136,6 +138,7 @@ const providerHubsData: ProviderHub[] = [
   {
     id: 'hub-freecodecamp',
     name: 'freeCodeCamp',
+    logo: '/images/cert/freecodecam_logo.webp',
     subtitle: 'C Programming & CS Foundations',
     x: 28,
     y: 68,
@@ -161,6 +164,7 @@ const providerHubsData: ProviderHub[] = [
   {
     id: 'hub-hackerrank',
     name: 'HackerRank',
+    logo: '/images/cert/hackerrank_logo.webp',
     subtitle: 'Database Architecture & SQL Specialization',
     x: 72,
     y: 68,
@@ -350,10 +354,14 @@ export default function Certificates() {
               onMouseEnter={() => setHoveredHub(hub.id)}
               onMouseLeave={() => setHoveredHub(null)}
             >
-              <h3 className="font-serif text-2xl md:text-3xl font-normal tracking-wide text-stone-900 leading-tight">
-                {hub.name}
-              </h3>
-              <p className="font-sans text-xs text-stone-500 mt-1 max-w-[220px] mx-auto leading-snug">
+              <img
+                src={hub.logo}
+                alt={hub.name}
+                loading="lazy"
+                decoding="async"
+                className="h-8 md:h-10 w-auto mx-auto object-contain"
+              />
+              <p className="font-sans text-xs text-stone-500 mt-1.5 max-w-[220px] mx-auto leading-snug">
                 {hub.subtitle}
               </p>
             </div>
