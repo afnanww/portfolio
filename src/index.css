@@ -55,8 +55,8 @@
 /* Hide default cursor when custom cursor is active */
 @media (pointer: fine) {
 
-  body.custom-cursor-active,
-  body.custom-cursor-active * {
+  body.custom-cursor-active.cursor-hovering,
+  body.custom-cursor-active.cursor-hovering * {
     cursor: none !important;
   }
 }

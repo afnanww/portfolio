@@ -45,7 +45,8 @@ export default function CustomCursor() {
     const onMouseMove = (e: MouseEvent) => {
       if (!stateRef.current.visible) {
         stateRef.current.visible = true;
-        gsap.to([dot, ring, text, glow], { opacity: 1, duration: 0.3 });
+        // Only make the rotating text circle visible initially
+        gsap.to(text, { opacity: 0.85, duration: 0.3 });
       }
       dotX(e.clientX);
       dotY(e.clientY);
@@ -57,10 +58,11 @@ export default function CustomCursor() {
       glowY(e.clientY);
     };
 
-    // Hover enter: expand ring, show label, hide text ring
+    // Hover enter: expand ring, show label, hide text ring, hide normal system cursor
     const onHoverEnter = (e: Event) => {
       const target = e.target as HTMLElement;
       stateRef.current.hovering = true;
+      document.body.classList.add('cursor-hovering');
 
       // Determine label
       const customText = target.getAttribute('data-circle-cursor');
@@ -72,8 +74,9 @@ export default function CustomCursor() {
       }
       stateRef.current.label = label;
 
-      // Animate ring expand to fit bigger text
+      // Animate ring expand to fit bigger text & make it visible
       gsap.to(ring, {
+        opacity: 1,
         width: label ? 96 : 64,
         height: label ? 96 : 64,
         borderWidth: 2,
@@ -83,8 +86,9 @@ export default function CustomCursor() {
         ease: 'power3.out',
       });
 
-      // Animate dot: shrink & change color
+      // Animate dot: shrink & change color & make it visible
       gsap.to(dot, {
+        opacity: 1,
         width: 4,
         height: 4,
         backgroundColor: '#D4FF90',
@@ -110,12 +114,15 @@ export default function CustomCursor() {
       }
     };
 
-    // Hover leave: shrink ring back
+    // Hover leave: shrink ring back, hide custom ring/dot, show normal system cursor
     const onHoverLeave = () => {
       stateRef.current.hovering = false;
       stateRef.current.label = '';
+      document.body.classList.remove('cursor-hovering');
 
+      // Hide ring
       gsap.to(ring, {
+        opacity: 0,
         width: 44,
         height: 44,
         borderWidth: 1.5,
@@ -125,7 +132,9 @@ export default function CustomCursor() {
         ease: 'power3.out',
       });
 
+      // Hide dot
       gsap.to(dot, {
+        opacity: 0,
         width: 7,
         height: 7,
         backgroundColor: '#ffffff',
@@ -133,6 +142,7 @@ export default function CustomCursor() {
         ease: 'power2.out',
       });
 
+      // Show text ring & glow
       gsap.to(text, { opacity: 0.85, scale: 1, duration: 0.4, ease: 'power2.out' });
       gsap.to(glow, { opacity: 0.4, scale: 1, duration: 0.4 });
 
@@ -142,17 +152,21 @@ export default function CustomCursor() {
       }
     };
 
-    // Click feedback: quick pulse
+    // Click feedback: quick pulse (only if hovering, otherwise system click handles it)
     const onMouseDown = () => {
       stateRef.current.mouseDown = true;
-      gsap.to(ring, { scale: 0.8, duration: 0.12, ease: 'power3.out' });
-      gsap.to(dot, { scale: 1.8, duration: 0.12, ease: 'power3.out' });
+      if (stateRef.current.hovering) {
+        gsap.to(ring, { scale: 0.8, duration: 0.12, ease: 'power3.out' });
+        gsap.to(dot, { scale: 1.8, duration: 0.12, ease: 'power3.out' });
+      }
     };
 
     const onMouseUp = () => {
       stateRef.current.mouseDown = false;
-      gsap.to(ring, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
-      gsap.to(dot, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
+      if (stateRef.current.hovering) {
+        gsap.to(ring, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
+        gsap.to(dot, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
+      }
     };
 
     // Hide cursor when leaving window
@@ -162,9 +176,14 @@ export default function CustomCursor() {
     };
 
     const onMouseEnterWindow = () => {
-      gsap.to([dot, ring], { opacity: 1, duration: 0.2 });
-      gsap.to(text, { opacity: 0.85, duration: 0.2 });
-      gsap.to(glow, { opacity: 0.4, duration: 0.2 });
+      if (stateRef.current.hovering) {
+        gsap.to([dot, ring], { opacity: 1, duration: 0.2 });
+        gsap.to([text, glow], { opacity: 0, duration: 0.2 });
+      } else {
+        gsap.to([dot, ring], { opacity: 0, duration: 0.2 });
+        gsap.to(text, { opacity: 0.85, duration: 0.2 });
+        gsap.to(glow, { opacity: 0.4, duration: 0.2 });
+      }
       stateRef.current.visible = true;
     };
 
@@ -219,7 +238,7 @@ export default function CustomCursor() {
       {/* Layer 3: Rotating SCROLL DOWN text ring (Inverts automatically with mix-blend-mode) */}
       <div
         ref={cursorTextRef}
-        className="fixed top-0 left-0 pointer-events-none z-[999997] w-36 h-36 opacity-0"
+        className="fixed top-0 left-0 pointer-events-none z-[999997] w-28 h-28 opacity-0"
         style={{ mixBlendMode: 'difference' }}
       >
         <svg
@@ -229,12 +248,12 @@ export default function CustomCursor() {
           <defs>
             <path
               id="cursorCirclePath"
-              d="M 50, 50 m -42, 0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0"
+              d="M 50, 50 m -33, 0 a 33,33 0 1,1 66,0 a 33,33 0 1,1 -66,0"
             />
           </defs>
-          <text className="font-jura text-[12px] font-extrabold tracking-[0.28em] fill-current uppercase">
+          <text className="font-jura text-[10px] font-extrabold tracking-[0.24em] fill-current uppercase">
             <textPath href="#cursorCirclePath">
-              SCROLL DOWN • EXPLORE • SCROLL DOWN • EXPLORE •
+              SCROLL DOWN • SCROLL DOWN •
             </textPath>
           </text>
         </svg>
