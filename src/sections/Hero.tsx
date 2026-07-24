@@ -63,7 +63,7 @@ export default function Hero() {
         {/* Subtitle Tagline (Junni Slogan: "Freely, Uniquely.") */}
         <div ref={taglineRef} className="mt-4 md:mt-6 space-y-3" style={{ opacity: 0 }}>
           <p className="font-jura text-lg md:text-2xl tracking-[0.2em] text-[#D4FF90] font-medium">
-            Fullstack Developer
+            Fullstack Developer 
           </p>
         </div>
       </div>

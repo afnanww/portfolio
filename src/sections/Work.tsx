@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { Download } from 'lucide-react';
 
-export interface Project {
+interface Project {
   id: string;
   num: string;
   title: string;
@@ -14,9 +15,12 @@ export interface Project {
   tags: string[];
   link: string;
   isComingSoon?: boolean;
+  readmeUrl?: string;
+  pdfUrl?: string;
+  videoUrl?: string;
 }
 
-export const projects: Project[] = [
+const projects: Project[] = [
   {
     id: 'ParcelKMPK',
     num: '01',
@@ -28,8 +32,10 @@ export const projects: Project[] = [
       'Tracking web app, and parcel inbound outbound handling management system for KMPK with private tendor',
     image: '/images/project/project1/parcelkmpk.webp',
     year: '2025',
-    tags: ['React', 'HTML/CSS', 'Laravel', 'PHP', 'JavaScript', 'MySQL', 'Redis'],
-    link: 'https://parcelkmpk-app-production.up.railway.app',
+    tags: ['React', 'HTML/CSS', 'Laravel', 'PHP', 'JavaScript', 'MySQL'],
+    link: 'https://parcelkmpk.najja.my',
+    readmeUrl: '/docs/ParcelKMPK_README.md',
+    pdfUrl: '/docs/ParcelKMPK_Specification.pdf',
   },
   {
     id: 'chatbotmanufacture',
@@ -44,6 +50,8 @@ export const projects: Project[] = [
     year: '2026',
     tags: ['Blade', 'LLM', 'JavaScript', 'Gemini', 'Google SheetsAPI', 'Google CalendarAPI', 'PostgreSQL'],
     link: 'https://manufacturechatbotdemo.afnanw.my/',
+    readmeUrl: '/docs/chatbotmanufacture_README.md',
+    pdfUrl: '/docs/chatbotmanufacture_CaseStudy.pdf',
   },
   {
     id: 'gridshotto',
@@ -57,7 +65,10 @@ export const projects: Project[] = [
     image: '/images/project/project3/gridshot-1.webp',
     year: '2026',
     tags: ['Three.js', 'WebGL', 'JavaScript', 'Web Audio API', 'HTML5'],
-    link: '#',
+    link: 'https://afnanww.github.io/gridshotto/',
+    readmeUrl: '/docs/gridshotto_README.md',
+    pdfUrl: '/docs/gridshotto_Architecture.pdf',
+    videoUrl: '/images/project/project3/gridshot-preview.webm',
   },
   {
     id: 'andmore',
@@ -75,13 +86,68 @@ export const projects: Project[] = [
   },
 ];
 
+const parseMarkdownToHtml = (md: string): string => {
+  if (!md) return '';
+
+  let html = md;
+  // Escape HTML tags to prevent XSS/rendering issues
+  html = html
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // Headers
+  html = html.replace(/^### (.*$)/gim, '<h3 class="font-jura text-sm md:text-base font-bold text-white mt-4 mb-2">$1</h3>');
+  html = html.replace(/^## (.*$)/gim, '<h2 class="font-jura text-base md:text-lg font-bold text-white mt-6 mb-3 border-b border-white/10 pb-1">$1</h2>');
+  html = html.replace(/^# (.*$)/gim, '<h1 class="font-display text-xl md:text-2xl font-black text-[#D4FF90] mt-8 mb-4 border-b border-[#D4FF90]/30 pb-2 uppercase tracking-widest">$1</h1>');
+
+  // Code Blocks
+  html = html.replace(/```([\s\S]*?)```/gm, '<pre class="bg-black/80 border border-white/10 p-3 rounded-sm my-4 overflow-x-auto font-mono text-[11px] text-[#D4FF90] leading-relaxed">$1</pre>');
+
+  // Inline Code
+  html = html.replace(/`([^`]+)`/g, '<code class="bg-white/10 px-1.5 py-0.5 rounded font-mono text-[11px] text-[#D4FF90]">$1</code>');
+
+  // Bold Text
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-black text-white">$1</strong>');
+
+  // List Items
+  html = html.replace(/^\s*[-*]\s+(.*$)/gim, '<li class="ml-4 list-disc text-gray-300 my-1.5 text-xs md:text-sm">$1</li>');
+
+  // Paragraphs
+  return html
+    .split(/\n\n+/)
+    .map((block) => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      if (
+        trimmed.startsWith('<h') ||
+        trimmed.startsWith('<li') ||
+        trimmed.startsWith('<pre') ||
+        trimmed.startsWith('<ul') ||
+        trimmed.startsWith('<ol')
+      ) {
+        return trimmed;
+      }
+      return `<p class="my-2.5 text-xs md:text-sm text-gray-300 leading-relaxed">${trimmed.replace(/\n/g, '<br />')}</p>`;
+    })
+    .join('\n');
+};
+
 export default function Work() {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
+  // Document Reader Modal states
+  const [docModalOpen, setDocModalOpen] = useState(false);
+  const [activeDocProject, setActiveDocProject] = useState<Project | null>(null);
+  const [activeDocTab, setActiveDocTab] = useState<'readme' | 'pdf'>('readme');
+  const [readmeContent, setReadmeContent] = useState('');
+  const [loadingReadme, setLoadingReadme] = useState(false);
+
   const currentProject = projects[activeIndex];
   const touchStartX = useRef<number | null>(null);
+  const readmeScrollRef = useRef<HTMLDivElement>(null);
 
   // Next / Prev slide handlers
   const handleNext = () => {
@@ -92,9 +158,55 @@ export default function Work() {
     setActiveIndex((prev) => Math.max(prev - 1, 0));
   };
 
+  // Fetch README markdown when activeDocProject changes
+  useEffect(() => {
+    if (!activeDocProject?.readmeUrl) {
+      return;
+    }
+
+    fetch(activeDocProject.readmeUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to load README file');
+        return res.text();
+      })
+      .then((text) => {
+        setReadmeContent(parseMarkdownToHtml(text));
+        setLoadingReadme(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setReadmeContent('<p class="text-red-400 font-mono text-sm">Failed to load project README documentation.</p>');
+        setLoadingReadme(false);
+      });
+  }, [activeDocProject]);
+
+  // Bind Escape key to close the document modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (docModalOpen) {
+        if (e.key === 'Escape') {
+          setDocModalOpen(false);
+          setActiveDocProject(null);
+          setReadmeContent('');
+        }
+        e.stopPropagation();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [docModalOpen]);
+
+  // Scroll to top of README on open/tab change
+  useEffect(() => {
+    if (docModalOpen && readmeScrollRef.current) {
+      readmeScrollRef.current.scrollTop = 0;
+    }
+  }, [docModalOpen, activeDocTab, activeDocProject]);
+
   // Keyboard arrow & scroll navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (docModalOpen) return;
       if (selectedProject) {
         if (e.key === 'Escape') setSelectedProject(null);
         return;
@@ -109,7 +221,7 @@ export default function Work() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedProject]);
+  }, [selectedProject, docModalOpen]);
 
   // Touch Swipe navigation
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -133,6 +245,7 @@ export default function Work() {
 
   // Animate slide change with GSAP
   const imageCardRef = useRef<HTMLDivElement>(null);
+  const { isComingSoon } = currentProject;
   useEffect(() => {
     if (imageCardRef.current && !selectedProject) {
       gsap.fromTo(
@@ -142,7 +255,7 @@ export default function Work() {
       );
 
       // Typography reveal for "and more..." slide
-      if (currentProject.isComingSoon) {
+      if (isComingSoon) {
         const chars = imageCardRef.current.querySelectorAll('.coming-soon-char');
         const sub = imageCardRef.current.querySelector('.coming-soon-sub');
 
@@ -169,7 +282,7 @@ export default function Work() {
         }
       }
     }
-  }, [activeIndex, selectedProject]);
+  }, [activeIndex, selectedProject, isComingSoon]);
 
   return (
     <section
@@ -251,13 +364,24 @@ export default function Work() {
                 <div
                   className="w-full h-full bg-[#0d0d0d] overflow-hidden relative border border-white/10"
                 >
-                  <img
-                    src={currentProject.image}
-                    alt={currentProject.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
-                  />
+                  {currentProject.videoUrl ? (
+                    <video
+                      src={currentProject.videoUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
+                    />
+                  ) : (
+                    <img
+                      src={currentProject.image}
+                      alt={currentProject.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover brightness-90 group-hover:brightness-105 transition-all duration-700 transform group-hover:scale-105"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500" />
                 </div>
 
@@ -297,9 +421,8 @@ export default function Work() {
               <button
                 onClick={handlePrev}
                 disabled={activeIndex === 0}
-                className={`w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 cursor-pointer font-mono text-sm ${
-                  activeIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90]'
-                }`}
+                className={`w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 cursor-pointer font-mono text-sm ${activeIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90]'
+                  }`}
                 aria-label="Previous project"
               >
                 ‹
@@ -312,9 +435,8 @@ export default function Work() {
               <button
                 onClick={handleNext}
                 disabled={activeIndex === projects.length - 1}
-                className={`w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 cursor-pointer font-mono text-sm ${
-                  activeIndex === projects.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90]'
-                }`}
+                className={`w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 cursor-pointer font-mono text-sm ${activeIndex === projects.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#D4FF90] hover:text-black hover:border-[#D4FF90]'
+                  }`}
                 aria-label="Next project"
               >
                 ›
@@ -401,14 +523,18 @@ export default function Work() {
 
               {/* Action Buttons: SEE MORE + VISIT SITE */}
               <div className="pt-4 space-y-2">
-                <a
-                  href={selectedProject.link.startsWith('http') ? selectedProject.link : `https://${selectedProject.link}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => {
+                    setActiveDocProject(selectedProject);
+                    setReadmeContent('');
+                    setLoadingReadme(true);
+                    setActiveDocTab('readme');
+                    setDocModalOpen(true);
+                  }}
                   className="w-full inline-flex items-center justify-center gap-2 py-3 px-6 border border-white/30 text-white hover:bg-white hover:text-black hover:border-white transition-all font-jura text-xs tracking-widest font-extrabold uppercase rounded-sm cursor-pointer shadow-md group"
                 >
                   read more <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </a>
+                </button>
 
                 <a
                   href={selectedProject.link.startsWith('http') ? selectedProject.link : `https://${selectedProject.link}`}
@@ -427,11 +553,22 @@ export default function Work() {
                 <div
                   className="w-full h-full bg-[#0d0d0d] overflow-hidden relative border border-white/10 rounded-sm"
                 >
-                  <img
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    className="w-full h-full object-cover"
-                  />
+                  {selectedProject.videoUrl ? (
+                    <video
+                      src={selectedProject.videoUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -492,6 +629,120 @@ export default function Work() {
               </div>
             );
           })()}
+        </div>
+      )}
+
+      {/* ── MODE 3: Document Reader Modal Overlay ── */}
+      {docModalOpen && activeDocProject && (
+        <div
+          className="fixed inset-0 bg-black/85 backdrop-blur-md z-[60] flex items-center justify-center p-4 md:p-6 animate-in fade-in duration-300"
+          onClick={() => {
+            setDocModalOpen(false);
+            setActiveDocProject(null);
+            setReadmeContent('');
+          }}
+        >
+          <div
+            className="relative w-full max-w-5xl h-[85vh] md:h-[80vh] bg-[#0c0c0c] border border-white/15 text-white rounded-sm flex flex-col overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300"
+            onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent
+          >
+            {/* Modal Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 px-6 py-4 gap-4 bg-black/40">
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-xs font-bold text-[#D4FF90]">0{activeDocProject.num}</span>
+                <span className="h-4 w-px bg-white/20" />
+                <h3 className="font-jura text-base md:text-lg font-black tracking-wider uppercase text-white">
+                  {activeDocProject.title} Documentation
+                </h3>
+              </div>
+
+              {/* Tabs list inside Header */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setActiveDocTab('readme')}
+                  className={`px-4 py-1.5 font-jura text-[10px] md:text-xs font-extrabold uppercase tracking-wider rounded-sm transition-all border cursor-pointer ${activeDocTab === 'readme'
+                    ? 'bg-white text-black border-white'
+                    : 'bg-transparent text-white border-white/15 hover:bg-white/5 hover:border-white/30'
+                    }`}
+                >
+                  README.md
+                </button>
+                {activeDocProject.pdfUrl && (
+                  <button
+                    onClick={() => setActiveDocTab('pdf')}
+                    className={`px-4 py-1.5 font-jura text-[10px] md:text-xs font-extrabold uppercase tracking-wider rounded-sm transition-all border cursor-pointer ${activeDocTab === 'pdf'
+                      ? 'bg-white text-black border-white'
+                      : 'bg-transparent text-white border-white/15 hover:bg-white/5 hover:border-white/30'
+                      }`}
+                  >
+                    PDF Document
+                  </button>
+                )}
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => {
+                  setDocModalOpen(false);
+                  setActiveDocProject(null);
+                  setReadmeContent('');
+                }}
+                className="absolute top-4 right-4 md:static md:ml-4 w-8 h-8 rounded-full border border-white/25 flex items-center justify-center text-white hover:bg-white hover:text-black hover:border-white transition-all cursor-pointer font-mono text-sm shrink-0"
+                aria-label="Close document reader"
+                data-circle-cursor="close"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 min-h-0 relative bg-[#090909]">
+              {/* Tab 1: README Content Viewport */}
+              {activeDocTab === 'readme' && (
+                <div
+                  ref={readmeScrollRef}
+                  className="w-full h-full overflow-y-auto px-6 py-6 md:px-8 select-text selection:bg-[#D4FF90]/30 selection:text-white"
+                  data-lenis-prevent
+                >
+                  {loadingReadme ? (
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+                      <div className="w-6 h-6 border-2 border-white/20 border-t-[#D4FF90] rounded-full animate-spin" />
+                      <p className="font-jura text-xs tracking-widest text-gray-500 uppercase">Fetching Documentation...</p>
+                    </div>
+                  ) : (
+                    <article
+                      className="max-w-3xl mx-auto prose prose-invert font-sans"
+                      dangerouslySetInnerHTML={{ __html: readmeContent }}
+                    />
+                  )}
+                </div>
+              )}
+
+              {/* Tab 2: PDF Document Viewport */}
+              {activeDocTab === 'pdf' && activeDocProject.pdfUrl && (
+                <div className="w-full h-full relative flex flex-col bg-black">
+                  {/* Floating Action Bar for Mobile & Quick Actions */}
+                  <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+                    <a
+                      href={activeDocProject.pdfUrl}
+                      download
+                      className="bg-white/95 text-black hover:bg-[#D4FF90] font-jura text-[10px] font-extrabold px-3 py-1.5 rounded-sm uppercase transition-all shadow-lg flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" /> Download PDF
+                    </a>
+                  </div>
+
+                  {/* Embedded PDF iframe */}
+                  <iframe
+                    src={`${activeDocProject.pdfUrl}#toolbar=0&navpanes=0`}
+                    className="w-full h-full border-0 select-none bg-stone-950"
+                    title={`${activeDocProject.title} PDF Document`}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </section>
